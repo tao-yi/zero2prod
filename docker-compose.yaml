@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRESQL_USERNAME=admin
       - POSTGRESQL_PASSWORD=admin
-      - POSTGRESQL_POSTGRES_PASSWORD=postgres # password for root user postgres
+      # - POSTGRESQL_POSTGRES_PASSWORD=postg # password for root user postgres
       - POSTGRESQL_MAX_CONNECTIONS=1000 # increased maximum of connections for testing purpose
       - POSTGRESQL_DATABASE=newsletter
     ports:
