@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  zero2prod-pg:
+    image: bitnami/postgresql:latest # use latest official postgres version
+    environment:
+      - POSTGRESQL_USERNAME=admin
+      - POSTGRESQL_PASSWORD=admin
+      - POSTGRESQL_POSTGRES_PASSWORD=postgres # password for root user postgres
+      - POSTGRESQL_MAX_CONNECTIONS=1000 # increased maximum of connections for testing purpose
+      - POSTGRESQL_DATABASE=newsletter
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data/
+      # - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - zero2prod-network
+    
+networks:
+  zero2prod-network:
