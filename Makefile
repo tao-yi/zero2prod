@@ -37,6 +37,15 @@ audit:
 expand:
 	@cargo expand
 
+# spot unused dependencies
+udepds:
+	@cargo udeps
+
+
+# cargo-udeps scans your Cargo.toml file and checks if all the crates listed under [dependencies] have actually been used in the project.
+# cargo install cargo-udeps
+
+
 # clippy is included in the set of components installed by rustup 
 # if you are using the default profile. Often CI environments use rustup’s minimal profile, which does not include clippy.
 # You can easily install it with
