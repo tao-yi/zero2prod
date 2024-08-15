@@ -1,9 +1,9 @@
 use crate::routes::{health_check, subscribe};
 use actix_web::dev::Server;
-use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
 use sqlx::PgPool;
 use std::net::TcpListener;
+use tracing_actix_web::TracingLogger;
 
 // actix-web run() will spin up a worker process for each available core on your machine.
 // Each worker runs its own copy of the application built by HttpServer calling the very same closure
@@ -15,7 +15,7 @@ pub fn run(listener: TcpListener, db_pool: PgPool) -> Result<Server, std::io::Er
     let server = HttpServer::new(move || {
         App::new()
             // Middlewares are added using the `wrap` method on `App`
-            .wrap(Logger::default())
+            .wrap(TracingLogger::default())
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
             // Get a pointer copy and attach it to the application state
