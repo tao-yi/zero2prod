@@ -41,6 +41,19 @@ expand:
 udepds:
 	@cargo udeps
 
+# `.` telling docker to look for Dockerfile in the current directory
+build:
+	@docker build -t zero2prod --file Dockerfile .
+
+docker-run:
+	@docker run -p 8000:8000 zero2prod
+
+
+# Generate query metadata to support offline compile-time verification.
+# Saves metadata for all invocations of `query!` and related macros to
+# `sqlx-data.json` in the current directory, overwriting if needed.
+prepare:
+	@cargo sqlx prepare -- --lib
 
 # cargo-udeps scans your Cargo.toml file and checks if all the crates listed under [dependencies] have actually been used in the project.
 # cargo install cargo-udeps
