@@ -1,4 +1,7 @@
-target
-data
-.github
-.scripts
+.env
+target/
+tests/
+Dockerfile
+scripts/
+data/
+.github/

@@ -1,7 +1,9 @@
+use std::time::Duration;
+
 use secrecy::ExposeSecret;
-use sqlx::PgPool;
+use sqlx::postgres::PgPoolOptions;
 use tracing::info;
-use zero2prod::configuration::get_configuration;
+use zero2prod::configuration::{get_configuration, ApplicationSettings};
 use zero2prod::startup::run;
 use zero2prod::telemetry::{get_subscriber, init_subscriber};
 
@@ -16,10 +18,17 @@ async fn main() -> std::io::Result<()> {
 
     // connect_lazy() - it will only try to establish a connection when the pool is used for the first time.
     // No longer async, given that we don't actually try to connect!
-    let connection_pool =
-        PgPool::connect_lazy(configuration.database.connection_string().expose_secret())
-            .expect("Failed to connect to Postgres.");
-    let address = format!("127.0.0.1:{}", configuration.application.port);
+    let connection_pool = PgPoolOptions::new()
+        .max_connections(1000)
+        .acquire_timeout(Duration::from_secs(2))
+        .connect(&configuration.database.connection_string().expose_secret())
+        .await
+        .expect("Failed to connect to Postgres.");
+
+    // PgPool::connect_lazy(configuration.database.connection_string().expose_secret())
+    //     .expect("Failed to connect to Postgres.");
+    let ApplicationSettings { host, port } = configuration.application;
+    let address = format!("{}:{}", host, port);
     let listener = std::net::TcpListener::bind(&address)?;
     run(listener, connection_pool)?.await?;
     Ok(())

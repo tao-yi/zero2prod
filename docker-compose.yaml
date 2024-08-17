@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   zero2prod-pg:
     image: bitnami/postgresql:latest # use latest official postgres version
