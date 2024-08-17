@@ -40,7 +40,14 @@ tracing-actix-web = "0.7.11"
 # Using table-like toml syntax to avoid a super-long line!
 [dependencies.sqlx]
 version = "0.8"
-features = ["runtime-tokio-rustls", "macros", "postgres", "uuid", "chrono", "migrate"]
+features = [
+  "runtime-tokio-rustls",
+  "macros",
+  "postgres",
+  "uuid",
+  "chrono",
+  "migrate",
+]
 
 
 # Dev dependencies are used exclusively when running tests or examples# not when the project is built for production.
